@@ -1,0 +1,162 @@
+package CIE;
+import java.util.Scanner;
+public class Internals extends Student {
+protected int[] marks;
+int n = 5; // assuming there are 5 subjects for now
+// Constructor to initialize the inherited fields and the marks array
+public Internals(String usn, String name) {
+super(); // Calling the parent constructor (Student)
+this.usn = usn;
+this.name = name;
+
+21
+
+this.marks = new int[n]; // Initialize the marks array with size 5
+}
+// Method to input marks
+public void get_CIE_marks() {
+Scanner s2 = new Scanner(System.in);
+for (int i = 0; i < n; i++) {
+System.out.println("Enter marks of subject " + (i + 1) + ": ");
+marks[i] = s2.nextInt();
+}
+}
+// Method to display marks
+public void display_marks() {
+System.out.println("Marks for the student " + name + ":");
+for (int i = 0; i < n; i++) {
+System.out.println("Subject " + (i + 1) + ": " + marks[i]);
+}
+}
+// Main method for testing
+public static void main(String[] args) {
+Internals intern = new Internals("1BS19CS001", "John Doe");
+intern.get_CIE_marks();
+intern.display_marks();
+}
+}
+package CIE;
+import java.util.Scanner;
+public class Student {
+protected String usn, name;
+protected int sem;
+// Constructor
+public Student() {
+this.usn = "";
+this.name = "";
+this.sem = 0;
+}
+// Method to input details
+public void get_details() {
+Scanner s1 = new Scanner(System.in);
+System.out.println("Enter USN: ");
+
+22
+
+usn = s1.nextLine();
+System.out.println("Enter Name: ");
+name = s1.nextLine();
+System.out.println("Enter Semester: ");
+// Handle input for integer value for semester
+while (!s1.hasNextInt()) {
+System.out.println("Please enter a valid integer for Semester: ");
+s1.next(); // Consume the invalid input
+}
+sem = s1.nextInt();
+}
+// Method to display details
+public void display_details() {
+System.out.println("USN: " + usn);
+System.out.println("Name: " + name);
+System.out.println("Semester: " + sem);
+}
+// Main method for testing
+public static void main(String[] args) {
+Student student = new Student();
+student.get_details();
+student.display_details();
+}
+}
+package SEE;
+import CIE.Internals;
+import java.util.Scanner;
+public class Externals extends Internals {
+protected int[] marks;
+protected int[] final_marks;
+int x = 5; // Assuming 5 subjects
+// Constructor to initialize marks and final_marks arrays
+public Externals(String usn, String name) {
+super(usn, name); // Call the constructor of Internals (and Student)
+this.marks = new int[x]; // Initialize marks array
+this.final_marks = new int[x]; // Initialize final_marks array
+}
+// Method to input external exam marks
+public void get_SEE_marks() {
+
+23
+
+Scanner s3 = new Scanner(System.in);
+for (int i = 0; i < x; i++) {
+System.out.println("Enter marks of external exam for subject " + (i + 1) + ": ");
+marks[i] = s3.nextInt();
+}
+}
+// Method to calculate final marks
+public void calc_final_marks() {
+for (int i = 0; i < x; i++) {
+// Assuming final_marks is the sum of internal and external marks
+final_marks[i] = marks[i] + super.marks[i];
+}
+}
+// Method to display final marks
+public void display_final_marks() {
+// Display the basic student details
+display_details();
+// Display the final marks for each subject
+System.out.println("Final marks for each subject: ");
+for (int i = 0; i < x; i++) {
+System.out.println("Subject " + (i + 1) + ": " + final_marks[i]);
+}
+}
+// Main method for testing
+public static void main(String[] args) {
+Externals externals = new Externals("1BS19CS001", "John Doe");
+externals.get_CIE_marks(); // Get internal marks
+externals.get_SEE_marks(); // Get external marks
+externals.calc_final_marks(); // Calculate final marks
+externals.display_final_marks(); // Display final marks
+}
+}
+import SEE.Externals;
+import java.util.Scanner;
+class Run {
+public static void main(String args[]) {
+int num;
+Scanner s4 = new Scanner(System.in);
+System.out.println("Total Students: ");
+num = s4.nextInt();
+
+24
+
+// Array of Externals objects (since Externals has all the required methods)
+Externals[] students = new Externals[num];
+// Loop through each student
+for (int i = 0; i < num; i++) {
+// Prompt for student details (USN and Name)
+Scanner input = new Scanner(System.in); // To handle input for each student
+System.out.println("Enter USN for student " + (i + 1) + ": ");
+String usn = input.nextLine();
+System.out.println("Enter Name for student " + (i + 1) + ": ");
+String name = input.nextLine();
+// Create an Externals object for each student
+students[i] = new Externals(usn, name);
+// Get details and marks for each student
+students[i].get_details(); // Gets general details
+students[i].display_details(); // Displays general details
+students[i].get_CIE_marks(); // Get internal marks (CIE)
+students[i].get_SEE_marks(); // Get external marks (SEE)
+students[i].calc_final_marks(); // Calculate final marks
+students[i].display_final_marks(); // Display final marks
+}
+}
+}
